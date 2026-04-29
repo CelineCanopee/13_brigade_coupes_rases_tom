@@ -12,7 +12,7 @@
     "cleanup": "biome check --write --unsafe",
     "cleanup:tsc": "biome check --write && tsc",
     "build:ci": "vite build",
-    "build": "pnpm cleanup && tsc -b && vite build",
+    "build": "tsc -b && vite build",
     "build:preview": "pnpm build && vite preview",
     "build:dev:preview": "pnpm build --mode development && vite preview",
     "preview": "vite preview",
