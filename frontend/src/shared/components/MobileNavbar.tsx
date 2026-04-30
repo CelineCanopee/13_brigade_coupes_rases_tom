@@ -1,5 +1,12 @@
 import { useRouterState } from "@tanstack/react-router"
-import { House, ListIcon, LogIn, LogOutIcon, Settings } from "lucide-react"
+import {
+	House,
+	ListIcon,
+	LogIn,
+	LogOutIcon,
+	Settings,
+	User
+} from "lucide-react"
 
 import { useLayout } from "@/features/clear-cut/components/Layout.context"
 import { useConnectedMe } from "@/features/user/store/me.slice"
@@ -34,6 +41,14 @@ export function MobileNavbar() {
 					onClick={() => setLayout("list")}
 					forceActive={isOnClearCutsRoute && layout === "list"}
 				/>
+				{user && (
+					<MobileNavbarLink
+						to="/my-cuts"
+						label="Mes Coupes"
+						Icon={User}
+						title="Mes Coupes"
+					/>
+				)}
 				{user?.role === "admin" && (
 					<MobileNavbarLink
 						to="/administration"

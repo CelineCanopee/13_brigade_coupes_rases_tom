@@ -81,7 +81,9 @@ export const clearCutReportResponseSchema = z.object({
 	firstCutDate: z.iso.date(),
 	satelliteImages: z.array(z.url()).optional(),
 	rulesIds: z.array(z.string()),
-	affectedUser: publicUserSchema.optional()
+	userId: z.string().optional().nullable(),
+	affectedUser: publicUserSchema.optional().nullable(),
+	assignmentRequestedById: z.string().optional().nullable()
 })
 export type ClearCutReportResponse = z.infer<
 	typeof clearCutReportResponseSchema
@@ -113,6 +115,13 @@ export const clearCutsResponseSchema = z.object({
 })
 
 export type ClearCutsResponse = z.infer<typeof clearCutsResponseSchema>
+
+export const myAssignedReportsResponseSchema = paginationResponseSchema(
+	clearCutReportResponseSchema
+)
+export type MyAssignedReportsResponse = z.infer<
+	typeof myAssignedReportsResponseSchema
+>
 
 const clearCutsSchema = clearCutsResponseSchema.omit({ previews: true }).extend(
 	z.object({

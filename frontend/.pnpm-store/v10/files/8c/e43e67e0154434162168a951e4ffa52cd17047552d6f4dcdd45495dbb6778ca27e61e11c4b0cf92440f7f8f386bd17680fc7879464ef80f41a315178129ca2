@@ -1,0 +1,84 @@
+{
+  "name": "use-breakpoint",
+  "version": "4.0.6",
+  "description": "A React hook for getting the current responsive media breakpoint",
+  "author": "Iiro Jäppinen <iiro@jappinen.fi (https://iiro.fi)",
+  "license": "MIT",
+  "homepage": "https://github.com/iiroj/use-breakpoint",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iiroj/use-breakpoint.git"
+  },
+  "bugs": "https://github.com/iiroj/use-breakpoint/issues",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "types": "./dist/esm/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "start": "storybook dev -p 8080",
+    "lint": "eslint",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "jest",
+    "build:esm": "tsc --build tsconfig.esm.json",
+    "build:cjs": "tsc --build tsconfig.cjs.json",
+    "prebuild": "rm -rf dist",
+    "build": "npm run build:esm && npm run build:cjs",
+    "postbuild": "./scripts/emit-package-json.sh"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "19.7.1",
+    "@eslint/js": "9.19.0",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/commit-analyzer": "13.0.1",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "11.0.1",
+    "@semantic-release/npm": "12.0.1",
+    "@semantic-release/release-notes-generator": "14.0.3",
+    "@storybook/react-vite": "8.5.3",
+    "@swc/jest": "0.2.37",
+    "@testing-library/react": "16.2.0",
+    "@types/jest": "29.5.14",
+    "@types/react": "19.0.8",
+    "@types/react-dom": "19.0.3",
+    "commitlint": "19.7.1",
+    "conventional-changelog-conventionalcommits": "8.0.0",
+    "eslint": "9.19.0",
+    "eslint-config-prettier": "10.0.1",
+    "eslint-plugin-jest": "28.11.0",
+    "eslint-plugin-prettier": "5.2.3",
+    "globals": "15.14.0",
+    "husky": "9.1.7",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "29.7.0",
+    "jest-matchmedia-mock": "1.1.0",
+    "lint-staged": "15.4.3",
+    "prettier": "3.4.2",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "storybook": "8.5.3",
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.22.0"
+  },
+  "keywords": [
+    "breakpoint",
+    "matchMedia",
+    "react",
+    "responsive",
+    "typescript",
+    "viewport",
+    "window.matchMedia"
+  ]
+}

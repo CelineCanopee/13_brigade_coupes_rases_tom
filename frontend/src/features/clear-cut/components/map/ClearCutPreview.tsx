@@ -54,9 +54,6 @@ export function ClearCutPreview({ report, clearCut }: Props) {
 				mouseover: (event) => {
 					event.target.openPopup()
 				},
-				mouseout: (event) => {
-					event.target.closePopup()
-				},
 				dblclick: () => {
 					navigateToDetail()
 				},

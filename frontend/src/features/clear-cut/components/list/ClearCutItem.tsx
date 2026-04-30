@@ -16,34 +16,6 @@ import { IconButton } from "@/shared/components/button/Button"
 import { useBreakpoint } from "@/shared/hooks/breakpoint"
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/store"
 
-type FavoriteButtonProps = {
-	reportId: string
-}
-
-const FavoriteButton = ({ reportId }: FavoriteButtonProps) => {
-	const dispatch = useAppDispatch()
-	const isFavorite = useAppSelector(selectFavorites).includes(reportId)
-	return (
-		<IconButton
-			variant="ghost"
-			icon={
-				<HeartIcon
-					className={clsx("text-destructive", {
-						"fill-destructive": isFavorite
-					})}
-				/>
-			}
-			onClick={(e) => {
-				e.stopPropagation()
-				if (isFavorite) {
-					dispatch(removeFavoriteThunk(reportId))
-				} else {
-					dispatch(addFavoriteThunk(reportId))
-				}
-			}}
-		/>
-	)
-}
 
 export function ClearCutItem({
 	id,
@@ -87,7 +59,6 @@ export function ClearCutItem({
 			</div>
 			<div className="flex justify-between items-center">
 				<StatusWithLabel status={status} />
-				<FavoriteButton reportId={id} />
 			</div>
 			{comment && <p className="text-zinc-500 line-clamp-2">{comment}</p>}
 			<div className="flex gap-2 ">

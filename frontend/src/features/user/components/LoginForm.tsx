@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Link } from "@tanstack/react-router"
 import { LogInIcon } from "lucide-react"
 import { useEffect } from "react"
 import { FormProvider, useForm } from "react-hook-form"
@@ -120,6 +121,14 @@ export function LoginForm() {
 								</FormItem>
 							)}
 						/>
+						<div className="flex justify-end !mt-1">
+							<Link
+								to="/forgot-password"
+								className="text-xs text-primary hover:underline"
+							>
+								Mot de passe oublié ?
+							</Link>
+						</div>
 						<Button
 							className="w-full"
 							type="submit"
@@ -131,6 +140,15 @@ export function LoginForm() {
 					</form>
 				</FormProvider>
 			)}
+			<div className="mt-6 text-center text-sm">
+				Pas encore de compte ?{" "}
+				<Link
+					to="/register"
+					className="text-primary hover:underline font-semibold"
+				>
+					S'inscrire
+				</Link>
+			</div>
 		</>
 	)
 }

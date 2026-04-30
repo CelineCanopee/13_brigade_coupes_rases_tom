@@ -74,7 +74,10 @@ class ClearCutReportPreviewSchema(BaseSchema):
     total_bdf_poplar_area_hectare: float | None = Field(
         json_schema_extra={"example": 10.0}
     )
-
+    user_id: str | None = Field(
+        json_schema_extra={"example": "1"},
+        default=None,
+    )
 
 def sum_area(clear_cuts: list[ClearCut], area_attr: str) -> float:
     return sum(getattr(cc, area_attr, 0) or 0 for cc in clear_cuts)
@@ -113,6 +116,7 @@ def report_to_report_preview_schema(
         total_bdf_deciduous_area_hectare=report.total_bdf_deciduous_area_hectare,
         total_bdf_mixed_area_hectare=report.total_bdf_mixed_area_hectare,
         total_bdf_poplar_area_hectare=report.total_bdf_poplar_area_hectare,
+        user_id=str(report.user_id) if report.user_id else None,
         last_cut_date=max(
             clear_cut.observation_end_date for clear_cut in report.clear_cuts
         ).date(),

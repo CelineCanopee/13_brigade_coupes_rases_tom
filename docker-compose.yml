@@ -60,5 +60,8 @@ services:
       container_name: coupes-rases-frontend
       ports:
         - "8081:8000"
+      volumes:
+        - ./frontend:/app
+        - /app/node_modules
       depends_on:
         - backend

@@ -32,8 +32,8 @@ class ClearCutReportPutRequestSchema(BaseSchema):
 
     @field_validator("status")
     def validate_status(cls, value):
-        if value not in CLEARCUT_STATUSES:
-            raise ValueError("Status must be one of: pending, validated")
+        if value is not None and value not in CLEARCUT_STATUSES:
+            raise ValueError(f"Status must be one of: {', '.join(CLEARCUT_STATUSES)}")
         return value
 
 
@@ -62,14 +62,20 @@ class ClearCutReportResponseSchema(BaseSchema):
         json_schema_extra={"example": "2023-10-10T00:00:00Z"},
     )
     affected_user: PublicUserResponseSchema | None = None
+    assignment_requested_by_id: str | None = None
 
 
-def report_to_response_schema(report: ClearCutReport) -> ClearCutReportResponseSchema:
+def report_to_response_schema(report: ClearCutReport, current_user: "User | None" = None) -> ClearCutReportResponseSchema:
+    show_user_info = False
+    if current_user is not None:
+        if current_user.role == "admin" or current_user.id == report.user_id:
+            show_user_info = True
+
     return ClearCutReportResponseSchema(
         id=str(report.id),
         affected_user=(
             None
-            if report.user_id is None
+            if report.user_id is None or not show_user_info
             else PublicUserResponseSchema(
                 id=str(report.user.id),
                 email=report.user.email,
@@ -82,5 +88,6 @@ def report_to_response_schema(report: ClearCutReport) -> ClearCutReportResponseS
         slope_area_hectare=report.slope_area_hectare,
         statellite_images=report.statellite_images,
         updated_at=report.updated_at,
-        user_id=str(report.user_id) if report.user_id is not None else None,
+        user_id=str(report.user_id) if (report.user_id is not None and show_user_info) else None,
+        assignment_requested_by_id=str(report.assignment_requested_by_id) if report.assignment_requested_by_id else None,
     )
