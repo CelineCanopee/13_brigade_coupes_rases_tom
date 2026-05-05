@@ -20,14 +20,16 @@ Ce document détaille la stratégie d'implémentation pour répondre aux quatre 
 
 #### Backend (FastAPI)
 *   **[DONE] `backend/app/services/user_auth.py` et `routes`** : Ajout des routes pour l'inscription d'un bénévole (`POST /auth/register`), la demande de réinitialisation de mot de passe (`POST /auth/forgot-password`) et la validation de réinitialisation (`POST /auth/reset-password`).
-*   **[DONE] `backend/app/services/clear_cut_report.py`** : Création des endpoints d'attribution (`POST /clear-cuts/{id}/assign`) et de désattribution (`POST /clear-cuts/{id}/unassign`).
+*   **[DONE] `backend/app/services/clear_cut_report.py`** : Création des endpoints d'attribution (`POST /clear-cuts/{id}/assign`), de désattribution (`POST /clear-cuts/{id}/unassign`) et gestion des requêtes d'attribution manuelles avec le statut "Action Requise".
 *   **[DONE] `backend/app/models.py` & Sérialiseurs (schemas)** : S'assurer que les routes de lecture des coupes (GET) ne renvoient pas les informations personnelles (email, nom complet) de l'utilisateur assigné si le requérant n'est pas un administrateur.
 *   **[NEW] `backend/app/services/email.py`** : Module pour gérer l'envoi d'e-mails (Notification d'attribution et lien de reset password).
 
 #### Frontend (React)
 *   **[DONE] Pages d'Auth** : Création des pages d'inscription et de mot de passe oublié/réinitialisation.
 *   **[DONE] Onglet "Mon Compte" / "Mes Coupes"** : Nouvelle vue listant les coupes attribuées à l'utilisateur connecté.
-*   **[DONE] Pop-up de coupe** : Remplacement du bouton "Favoris" par les boutons "S'attribuer la coupe" (qui ouvre une confirmation "Valider la demande") et "Annuler l'attribution".
+*   **[DONE] Dashboard Admin "Actions Requises"** : Création d'un onglet listant les coupes en attente de validation ou les demandes d'attribution.
+*   **[DONE] Pop-up de coupe et Formulaires** : Déblocage de la pré-saisie pour les demandeurs d'attribution avant validation de l'admin.
+
 
 ---
 

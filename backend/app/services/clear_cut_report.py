@@ -271,7 +271,12 @@ def volunteer_create_clear_cut_report(
         city=city,
         clear_cuts=[cut],
         status="to_validate",
-        user_id=volunteer.id,
+        user_id=None,
+        assignment_requested_by_id=volunteer.id,
+        average_location=WKTElement(centroid_wkt, srid=SRID),
+        total_area_hectare=area_ha,
+        last_cut_date=today,
+        first_cut_date=today,
     )
 
     db.add(report)
@@ -303,6 +308,18 @@ def update_clear_cut_report(
         )
 
     report.user_id = user_id
+    if user_id is not None:
+        report.assignment_requested_by_id = None
+        
+    if request.status is not None:
+        if connected_user.role == "admin":
+            report.status = request.status
+        else:
+            raise AppHTTPException(
+                status_code=403,
+                type="INVALID_REQUESTER_RIGHTS",
+                detail="Only admins can update report status directly",
+            )
 
     db.commit()
     db.refresh(report)
@@ -310,12 +327,24 @@ def update_clear_cut_report(
 
 
 def find_clearcuts_reports(
-    db: Session, url: str, page: int = 0, size: int = 10, current_user: "User | None" = None, assigned_to_me: bool = False
+    db: Session, url: str, page: int = 0, size: int = 10, current_user: "User | None" = None, assigned_to_me: bool = False, admin_action_required: bool = False
 ) -> PaginationResponseSchema[ClearCutReportResponseSchema]:
-    query = db.query(ClearCutReport)
+    from sqlalchemy.orm import joinedload
+    query = db.query(ClearCutReport).options(
+        joinedload(ClearCutReport.user),
+        joinedload(ClearCutReport.assignment_requested_by)
+    )
     if assigned_to_me and current_user:
         query = query.filter(ClearCutReport.user_id == current_user.id)
+    if admin_action_required:
+        query = query.filter(
+            or_(
+                ClearCutReport.status == "to_validate",
+                ClearCutReport.assignment_requested_by_id.is_not(None)
+            )
+        )
         
+    query = query.order_by(ClearCutReport.updated_at.desc())
     reports = query.offset(page * size).limit(size).all()
     reports_count = query.count()
     reports_response = map(lambda r: report_to_response_schema(r, current_user), reports)

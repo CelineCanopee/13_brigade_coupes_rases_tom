@@ -16,7 +16,8 @@ import {
 	getClearCutsThunk,
 	rejectAssignmentThunk,
 	requestAssignReportThunk,
-	unassignReportThunk
+	unassignReportThunk,
+	updateReportStatusThunk
 } from "@/features/clear-cut/store/clear-cuts-slice"
 import { selectFiltersRequest } from "@/features/clear-cut/store/filters.slice"
 import { useConnectedMe } from "@/features/user/store/me.slice"
@@ -166,6 +167,45 @@ export function AccordionHeader({
 		)
 	}
 
+	const renderAdminValidationSection = () => {
+		if (!isAdmin || (status !== "to_validate" && status !== "waiting_for_validation")) return null
+
+		return (
+			<div className="flex flex-col gap-1 mb-2 mt-2 p-2 bg-amber-50 rounded-md border border-amber-200">
+				<p className="text-xs text-amber-800 font-medium text-center">
+					🚨 Analyse de la coupe en attente
+				</p>
+				<div className="flex gap-1">
+					<Button
+						onClick={(e) => {
+							e.preventDefault()
+							if (window.confirm("Valider cette coupe rase ?")) {
+								dispatch(updateReportStatusThunk({ id: reportId, status: "validated" })).then(refresh)
+							}
+						}}
+						className="flex-1 text-xs h-8 bg-green-600 hover:bg-green-700 text-white"
+						size="sm"
+					>
+						Valider
+					</Button>
+					<Button
+						onClick={(e) => {
+							e.preventDefault()
+							if (window.confirm("Rejeter ce signalement ?")) {
+								dispatch(updateReportStatusThunk({ id: reportId, status: "rejected" })).then(refresh)
+							}
+						}}
+						className="flex-1 text-xs h-8"
+						variant="destructive"
+						size="sm"
+					>
+						Rejeter
+					</Button>
+				</div>
+			</div>
+		)
+	}
+
 	return (
 		<div className="flex items-center mx-4 mt-2 gap-6 text-sm border-b-1 pb-1">
 			{form.getValues("report.satelliteImages")?.map((image) => (
@@ -181,6 +221,7 @@ export function AccordionHeader({
 			<div className="flex-1">
 				<div className="flex flex-col gap-2 mb-2">
 					<StatusWithLabel status={status} />
+					{renderAdminValidationSection()}
 					{renderAssignmentSection()}
 				</div>
 				<div className="flex gap-2 flex-wrap mb-2">

@@ -110,11 +110,12 @@ def volunteer_create(
 def list_clear_cuts_reports(
     db: Session = db_session, page: int = 0, size: int = 10,
     current_user: User | None = Depends(get_optional_current_user),
-    assigned_to_me: bool = False
+    assigned_to_me: bool = False,
+    admin_action_required: bool = False
 ) -> PaginationResponseSchema[ClearCutReportResponseSchema]:
     logger.info(db)
     return find_clearcuts_reports(
-        db, url="/api/v1/clear-cuts-reports", page=page, size=size, current_user=current_user, assigned_to_me=assigned_to_me
+        db, url="/api/v1/clear-cuts-reports", page=page, size=size, current_user=current_user, assigned_to_me=assigned_to_me, admin_action_required=admin_action_required
     )
 
 

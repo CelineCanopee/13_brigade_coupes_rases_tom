@@ -14,7 +14,8 @@ export const CLEAR_CUTTING_STATUSES = [
 	"waiting_for_validation",
 	"validated",
 	"legal_validated",
-	"final_validated"
+	"final_validated",
+	"rejected"
 ] as const
 
 export const clearCutStatusSchema = z.enum(CLEAR_CUTTING_STATUSES)
@@ -83,7 +84,8 @@ export const clearCutReportResponseSchema = z.object({
 	rulesIds: z.array(z.string()),
 	userId: z.string().optional().nullable(),
 	affectedUser: publicUserSchema.optional().nullable(),
-	assignmentRequestedById: z.string().optional().nullable()
+	assignmentRequestedById: z.string().optional().nullable(),
+	assignmentRequestedBy: publicUserSchema.optional().nullable()
 })
 export type ClearCutReportResponse = z.infer<
 	typeof clearCutReportResponseSchema

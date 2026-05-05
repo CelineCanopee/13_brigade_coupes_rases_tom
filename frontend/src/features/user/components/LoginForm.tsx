@@ -59,11 +59,14 @@ export function LoginForm() {
 				description: "Vous êtes maintenant connecté."
 			})
 		} else if (login.status === "error") {
+			const isInactive = login.error?.type === "USER_INACTIVE"
 			toast({
 				id: "login-failed",
-				title: "Erreur de connexion",
-				description: "Identifiants invalides. Veuillez réessayer.",
-				variant: "destructive"
+				title: isInactive ? "Compte en attente" : "Erreur de connexion",
+				description: isInactive
+					? login.error?.detail.content
+					: "Identifiants invalides. Veuillez réessayer.",
+				variant: isInactive ? "zinc" : "destructive"
 			})
 		}
 		return () => {

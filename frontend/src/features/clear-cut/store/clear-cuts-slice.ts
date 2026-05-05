@@ -256,6 +256,48 @@ export const getMyAssignedReportsThunk = createAppAsyncThunk<
 	}
 )
 
+export const getAdminActionRequiredReportsThunk = createAppAsyncThunk<
+	{ content: ClearCutReport[]; totalCount: number },
+	{ page: number; size: number }
+>(
+	"getAdminActionRequiredReports",
+	async ({ page, size }, { getState, extra: { api } }) => {
+		const result = await api()
+			.get("api/v1/clear-cuts-reports/", {
+				searchParams: { page, size, admin_action_required: true }
+			})
+			.json()
+		const parsed = myAssignedReportsResponseSchema.parse(result)
+		const state = getState()
+		const reports = parsed.content.map((report) => mapReport(state, report))
+		return {
+			content: reports,
+			totalCount: parsed.metadata.totalCount
+		}
+	}
+)
+
+export const getAdminAllReportsThunk = createAppAsyncThunk<
+	{ content: ClearCutReport[]; totalCount: number },
+	{ page: number; size: number }
+>(
+	"getAdminAllReports",
+	async ({ page, size }, { getState, extra: { api } }) => {
+		const result = await api()
+			.get("api/v1/clear-cuts-reports/", {
+				searchParams: { page, size }
+			})
+			.json()
+		const parsed = myAssignedReportsResponseSchema.parse(result)
+		const state = getState()
+		const reports = parsed.content.map((report) => mapReport(state, report))
+		return {
+			content: reports,
+			totalCount: parsed.metadata.totalCount
+		}
+	}
+)
+
 export const requestAssignReportThunk = createAppAsyncThunk<void, string>(
 	"requestAssignReport",
 	async (reportId, { extra: { api } }) => {
@@ -293,10 +335,13 @@ export const rejectAssignmentThunk = createAppAsyncThunk<void, string>(
 )
 
 export const unassignReportThunk = createAppAsyncThunk<void, string>(
-	"unassignReport",
-	async (reportId, { extra: { api } }) => {
-		await api().post(`api/v1/clear-cuts-reports/${reportId}/unassign`).json()
-	}
+	"clear-cuts/unassign",
+	async (id, { extra: { api } }) => await api().post(`api/v1/clear-cuts-reports/${id}/unassign`).json()
+)
+
+export const updateReportStatusThunk = createAppAsyncThunk<void, { id: string, status: string }>(
+	"clear-cuts/updateStatus",
+	async ({ id, status }, { extra: { api } }) => await api().put(`api/v1/clear-cuts-reports/${id}`, { json: { status } }).json()
 )
 
 type State = {
@@ -304,6 +349,14 @@ type State = {
 	detail: RequestedContent<ClearCutFormVersions>
 	submission: RequestedContent<void, EtagMismatchError>
 	myAssignedReports: RequestedContent<{
+		content: ClearCutReport[]
+		totalCount: number
+	}>
+	adminActionRequiredReports: RequestedContent<{
+		content: ClearCutReport[]
+		totalCount: number
+	}>
+	adminAllReports: RequestedContent<{
 		content: ClearCutReport[]
 		totalCount: number
 	}>
@@ -315,6 +368,8 @@ const initialState: State = {
 	detail: { status: "idle" },
 	submission: { status: "idle" },
 	myAssignedReports: { status: "idle" },
+	adminActionRequiredReports: { status: "idle" },
+	adminAllReports: { status: "idle" },
 	assignation: { status: "idle" }
 }
 
@@ -363,6 +418,16 @@ export const clearCutsSlice = createSlice({
 		)
 		addRequestedContentCases(
 			builder,
+			getAdminActionRequiredReportsThunk,
+			(state) => state.adminActionRequiredReports
+		)
+		addRequestedContentCases(
+			builder,
+			getAdminAllReportsThunk,
+			(state) => state.adminAllReports
+		)
+		addRequestedContentCases(
+			builder,
 			requestAssignReportThunk,
 			(state) => state.assignation
 		)
@@ -385,6 +450,11 @@ export const clearCutsSlice = createSlice({
 			builder,
 			unassignReportThunk,
 			(state) => state.assignation
+		)
+		addRequestedContentCases(
+			builder,
+			updateReportStatusThunk,
+			(state) => state.assignation // Reuse assignation loading state for simplicity
 		)
 		builder.addCase(getMeThunk.fulfilled, (_, { payload: { favorites } }) => {
 			formStorage.syncStorage(favorites, clearCutFormVersionsSchema)
@@ -412,6 +482,16 @@ export const selectMyAssignedReports = createTypedDraftSafeSelector(
 export const selectSubmission = createTypedDraftSafeSelector(
 	selectState,
 	(state) => state.submission
+)
+
+export const selectAdminAllReports = createTypedDraftSafeSelector(
+	selectState,
+	(state) => state.adminAllReports
+)
+
+export const selectAdminActionRequiredReports = createTypedDraftSafeSelector(
+	selectState,
+	(state) => state.adminActionRequiredReports
 )
 
 export const selectAssignation = createTypedDraftSafeSelector(

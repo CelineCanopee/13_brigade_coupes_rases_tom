@@ -78,6 +78,10 @@ class ClearCutReportPreviewSchema(BaseSchema):
         json_schema_extra={"example": "1"},
         default=None,
     )
+    assignment_requested_by_id: str | None = Field(
+        json_schema_extra={"example": "1"},
+        default=None,
+    )
 
 def sum_area(clear_cuts: list[ClearCut], area_attr: str) -> float:
     return sum(getattr(cc, area_attr, 0) or 0 for cc in clear_cuts)
@@ -103,20 +107,29 @@ def report_to_report_preview_schema(
             )
             for clear_cut in report.clear_cuts
         ],
-        department_id=str(report.city.department.id),
-        average_location=Point.model_validate_json(report.average_location_json),
+        department_id=str(report.city.department.id) if report.city and report.city.department else "0",
+        average_location=(
+            Point.model_validate_json(report.average_location_json)
+            if report.average_location_json
+            else (
+                Point.model_validate_json(report.clear_cuts[0].location_json)
+                if report.clear_cuts
+                else Point(type="Point", coordinates=[2.440236, 46.695554])  # Center of France as ultimate fallback
+            )
+        ),
         rules_ids=[str(rule.id) for rule in report.rules],
         status=report.status,
         slope_area_hectare=report.slope_area_hectare,
         created_at=report.created_at.date(),
         updated_at=report.updated_at.date(),
-        city=report.city.name,
+        city=report.city.name if report.city else "Inconnue",
         total_area_hectare=report.total_area_hectare,  # type: ignore
         total_bdf_resinous_area_hectare=report.total_bdf_resinous_area_hectare,
         total_bdf_deciduous_area_hectare=report.total_bdf_deciduous_area_hectare,
         total_bdf_mixed_area_hectare=report.total_bdf_mixed_area_hectare,
         total_bdf_poplar_area_hectare=report.total_bdf_poplar_area_hectare,
         user_id=str(report.user_id) if report.user_id else None,
+        assignment_requested_by_id=str(report.assignment_requested_by_id) if report.assignment_requested_by_id else None,
         last_cut_date=max(
             clear_cut.observation_end_date for clear_cut in report.clear_cuts
         ).date(),

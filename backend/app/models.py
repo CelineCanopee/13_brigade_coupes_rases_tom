@@ -235,6 +235,7 @@ CLEARCUT_STATUSES = [
     "legal_validated",
     "validated",
     "final_validated",
+    "rejected",
 ]
 
 
