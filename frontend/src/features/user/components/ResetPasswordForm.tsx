@@ -96,7 +96,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
 						className="w-full"
 						type="submit"
 						disabled={
-							!form.formState.isValid || resetPasswordState.status === "pending"
+							!form.formState.isValid || resetPasswordState.status === "loading"
 						}
 					>
 						<LockIcon />

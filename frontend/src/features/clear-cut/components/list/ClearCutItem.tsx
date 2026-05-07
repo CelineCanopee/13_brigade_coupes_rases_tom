@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import { HeartIcon } from "lucide-react"
 import { FormattedDate } from "react-intl"
 
 import { useMapInstance } from "@/features/clear-cut/components/map/Map.context"
@@ -7,14 +6,7 @@ import { RuleBadge } from "@/features/clear-cut/components/RuleBadge"
 import { StatusWithLabel } from "@/features/clear-cut/components/StatusWithLabel"
 import { useNavigateToClearCut } from "@/features/clear-cut/hooks"
 import type { ClearCutReport } from "@/features/clear-cut/store/clear-cuts"
-import {
-	addFavoriteThunk,
-	removeFavoriteThunk,
-	selectFavorites
-} from "@/features/user/store/me.slice"
-import { IconButton } from "@/shared/components/button/Button"
 import { useBreakpoint } from "@/shared/hooks/breakpoint"
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/store"
 
 
 export function ClearCutItem({

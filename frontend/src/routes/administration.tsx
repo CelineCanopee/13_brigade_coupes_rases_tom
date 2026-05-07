@@ -28,7 +28,7 @@ export const Route = createFileRoute("/administration")({
 
 function RouteComponent() {
 	return (
-		<div className="flex flex-col gap-4 grow p-8">
+		<div className="flex flex-col gap-4 grow p-4 sm:p-8 overflow-x-auto">
 			<Title>ADMINISTRATION</Title>
 			<Tabs defaultValue="action-required" className="grow">
 				<TabsList>

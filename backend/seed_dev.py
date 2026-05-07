@@ -226,7 +226,7 @@ def seed_database():
                 user=admin,
             ),
             ClearCutReport(
-                city=paris,
+                city=marseille,
                 slope_area_hectare=6.8,
                 clear_cuts=[
                     ClearCut(

@@ -154,7 +154,7 @@ function GeomanControls() {
 				variant: "default"
 			})
 			handleDialogClose(false)
-			dispatch(getClearCutsThunk(filters))
+			if (filters) dispatch(getClearCutsThunk(filters))
 			navigate({ to: "/clear-cuts/$clearCutId", params: { clearCutId: response.id } })
 		} catch {
 			toast({

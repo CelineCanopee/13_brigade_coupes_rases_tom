@@ -23,7 +23,7 @@ export function MobileNavbar() {
 	const isOnClearCutsRoute = location.pathname.startsWith("/clear-cuts")
 
 	return (
-		<nav className="flex sm:hidden py-1 items-center shadow justify-around fixed bottom-0 left-0 right-0 bg-white z-150 border-t h-12">
+		<nav className="flex sm:hidden py-1 items-center shadow justify-around fixed bottom-0 left-0 right-0 bg-white z-[150] border-t h-12">
 			<div className="flex items-center justify-around w-full">
 				<MobileNavbarLink
 					to="/"

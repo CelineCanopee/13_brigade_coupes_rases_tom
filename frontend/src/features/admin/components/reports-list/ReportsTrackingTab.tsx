@@ -22,7 +22,7 @@ export function ReportsTrackingTab() {
 		dispatch(getAdminAllReportsThunk({ page: 0, size: 100 }))
 	}, [dispatch])
 
-	if (reportsState.status === "idle" || reportsState.status === "pending") {
+	if (reportsState.status === "idle" || reportsState.status === "loading") {
 		return (
 			<div className="flex h-full w-full justify-center items-center">
 				<TimeProgress className="w-1/4" durationMs={1000} />
@@ -40,7 +40,7 @@ export function ReportsTrackingTab() {
 
 	return (
 		<div className="flex flex-col w-full h-full p-2 overflow-y-auto bg-white">
-			<div className="flex justify-between items-end mb-6">
+			<div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-6">
 				<div>
 					<h2 className="text-2xl font-bold text-primary mb-2">
 						Suivi des Zones de Coupe
@@ -77,8 +77,8 @@ export function ReportsTrackingTab() {
 				</div>
 			</div>
 
-			<div className="border rounded-xl overflow-hidden shadow-sm">
-				<table className="w-full text-left border-collapse">
+			<div className="border rounded-xl overflow-x-auto shadow-sm">
+				<table className="w-full min-w-[600px] text-left border-collapse">
 					<thead>
 						<tr className="bg-neutral-50 border-b border-neutral-200">
 							<th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-neutral-500">Zone / Ville</th>
@@ -98,7 +98,7 @@ export function ReportsTrackingTab() {
 								<td className="px-6 py-4">
 									<div className="flex flex-col">
 										<span className="font-semibold text-neutral-800">{report.city}</span>
-										<span className="text-xs text-neutral-500">Dept: {report.departmentId}</span>
+										<span className="text-xs text-neutral-500">Dept: {report.department.code}</span>
 									</div>
 								</td>
 								<td className="px-6 py-4">

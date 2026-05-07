@@ -156,7 +156,7 @@ export function RegisterForm() {
 						className="w-full"
 						type="submit"
 						disabled={
-							!form.formState.isValid || registerState.status === "pending"
+							!form.formState.isValid || registerState.status === "loading"
 						}
 					>
 						<LogInIcon />

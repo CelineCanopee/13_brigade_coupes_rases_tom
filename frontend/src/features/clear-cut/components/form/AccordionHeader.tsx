@@ -49,7 +49,7 @@ export function AccordionHeader({
 	const myId = user?.id
 
 	const refresh = () => {
-		dispatch(getClearCutsThunk(filters))
+		if (filters) dispatch(getClearCutsThunk(filters))
 		window.location.reload()
 	}
 

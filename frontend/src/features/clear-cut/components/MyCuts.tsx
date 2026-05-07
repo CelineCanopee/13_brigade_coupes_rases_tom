@@ -19,7 +19,7 @@ export function MyCuts() {
 		dispatch(getMyAssignedReportsThunk({ page: 0, size: 50 }))
 	}, [dispatch])
 
-	if (reportsState.status === "idle" || reportsState.status === "pending") {
+	if (reportsState.status === "idle" || reportsState.status === "loading") {
 		return (
 			<div className="flex h-full w-full justify-center items-center">
 				<TimeProgress className="w-1/4" durationMs={1000} />

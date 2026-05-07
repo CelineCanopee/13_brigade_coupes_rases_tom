@@ -176,7 +176,7 @@ export function ClearCutMapPopUp({
 									)
 								) {
 									dispatch(requestAssignReportThunk(id)).then(() => {
-										dispatch(getClearCutsThunk(filters))
+										if (filters) dispatch(getClearCutsThunk(filters))
 									})
 								}
 							}}
@@ -195,7 +195,7 @@ export function ClearCutMapPopUp({
 									)
 								) {
 									dispatch(unassignReportThunk(id)).then(() => {
-										dispatch(getClearCutsThunk(filters))
+										if (filters) dispatch(getClearCutsThunk(filters))
 									})
 								}
 							}}

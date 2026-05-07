@@ -11,7 +11,7 @@ import { UpdateUserDialog } from "@/features/admin/components/users-list/UpdateU
 import { selectPendingUsers, useGetUsers } from "@/features/admin/store/users.slice"
 import { TimeProgress } from "@/shared/components/TimeProgress"
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/store"
-import { UserIcon, CheckCircle } from "lucide-react"
+import { UserIcon } from "lucide-react"
 
 export function ActionRequiredTab() {
 	const dispatch = useAppDispatch()
@@ -25,7 +25,7 @@ export function ActionRequiredTab() {
 		dispatch(getAdminActionRequiredReportsThunk({ page: 0, size: 50 }))
 	}, [dispatch])
 
-	if (reportsState.status === "idle" || reportsState.status === "pending") {
+	if (reportsState.status === "idle" || reportsState.status === "loading") {
 		return (
 			<div className="flex h-full w-full justify-center items-center">
 				<TimeProgress className="w-1/4" durationMs={1000} />
@@ -134,7 +134,7 @@ export function ActionRequiredTab() {
 									{report.city || "Ville Inconnue"}
 								</h3>
 								<div className="bg-primary/10 text-primary text-xs px-2.5 py-1 rounded-full font-medium">
-									{report.departmentId}
+									{report.department.code}
 								</div>
 							</div>
 

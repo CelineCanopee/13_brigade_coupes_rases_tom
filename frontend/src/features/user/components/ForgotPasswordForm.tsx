@@ -94,7 +94,7 @@ export function ForgotPasswordForm() {
 						type="submit"
 						disabled={
 							!form.formState.isValid ||
-							forgotPasswordState.status === "pending"
+							forgotPasswordState.status === "loading"
 						}
 					>
 						<SendIcon />
