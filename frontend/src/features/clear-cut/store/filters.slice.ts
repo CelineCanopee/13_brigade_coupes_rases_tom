@@ -160,17 +160,10 @@ export const filtersSlice = createSlice({
 			state.pendingFilters.statuses = payload
 		},
 		commitFilters: (state) => {
-			state.cutYears = state.pendingFilters.cutYears
-			state.cutMonths = state.pendingFilters.cutMonths
-			state.departments = state.pendingFilters.departments
-			state.statuses = state.pendingFilters.statuses
-			state.areas = state.pendingFilters.areas
-			state.excessive_slope = state.pendingFilters.excessive_slope
-			state.ecological_zoning = state.pendingFilters.ecological_zoning
-			state.favorite = state.pendingFilters.favorite
+			Object.assign(state, state.pendingFilters)
 		},
 		resetFilters: (state) => {
-			const cleared = {
+			const cleared: PendingFilters = {
 				cutYears: state.cutYears.map((y) => ({ ...y, isSelected: false })),
 				cutMonths: state.cutMonths.map((m) => ({ ...m, isSelected: false })),
 				departments: state.departments.map((d) => ({ ...d, isSelected: false })),
@@ -187,14 +180,7 @@ export const filtersSlice = createSlice({
 				})) as typeof DEFAULT_EVENTUALLY_BOOLEAN
 			}
 			state.pendingFilters = cleared
-			state.cutYears = cleared.cutYears
-			state.cutMonths = cleared.cutMonths
-			state.departments = cleared.departments
-			state.statuses = cleared.statuses
-			state.areas = cleared.areas
-			state.excessive_slope = cleared.excessive_slope
-			state.ecological_zoning = cleared.ecological_zoning
-			state.favorite = cleared.favorite
+			Object.assign(state, cleared)
 			state.resetVersion += 1
 		},
 		setGeoBounds: (state, { payload }: PayloadAction<Bounds>) => {
@@ -217,7 +203,7 @@ export const filtersSlice = createSlice({
 					state.pendingFilters.ecological_zoning
 				)
 		},
-		setExcessiveSlop: (
+		setExcessiveSlope: (
 			state,
 			{ payload }: PayloadAction<SelectableItem<boolean | undefined>>
 		) => {
@@ -379,7 +365,7 @@ export const selectEcologicalZoning = createTypedDraftSafeSelector(
 	(state) => state.pendingFilters.ecological_zoning
 )
 
-export const selectExcessiveSlop = createTypedDraftSafeSelector(
+export const selectExcessiveSlope = createTypedDraftSafeSelector(
 	selectState,
 	(state) => state.pendingFilters.excessive_slope
 )

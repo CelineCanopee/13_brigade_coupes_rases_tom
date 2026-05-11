@@ -13,15 +13,13 @@ import { StatusWithLabel } from "../StatusWithLabel"
 import {
 	approveAssignmentThunk,
 	cancelAssignRequestThunk,
-	getClearCutsThunk,
 	rejectAssignmentThunk,
 	requestAssignReportThunk,
 	unassignReportThunk,
 	updateReportStatusThunk
 } from "@/features/clear-cut/store/clear-cuts-slice"
-import { selectFiltersRequest } from "@/features/clear-cut/store/filters.slice"
 import { useConnectedMe } from "@/features/user/store/me.slice"
-import { useAppDispatch, useAppSelector } from "@/shared/hooks/store"
+import { useAppDispatch } from "@/shared/hooks/store"
 import { Button } from "@/components/ui/button"
 
 export function AccordionHeader({
@@ -35,7 +33,6 @@ export function AccordionHeader({
 }) {
 	const dispatch = useAppDispatch()
 	const user = useConnectedMe()
-	const filters = useAppSelector(selectFiltersRequest)
 
 	const areaHectare = form.getValues("report.totalAreaHectare")
 	const ecologicalZonings = form.getValues("ecologicalZonings")
@@ -49,7 +46,6 @@ export function AccordionHeader({
 	const myId = user?.id
 
 	const refresh = () => {
-		if (filters) dispatch(getClearCutsThunk(filters))
 		window.location.reload()
 	}
 

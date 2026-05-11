@@ -16,7 +16,7 @@ import {
 	selectCutYears,
 	selectDepartments,
 	selectEcologicalZoning,
-	selectExcessiveSlop,
+	selectExcessiveSlope,
 	selectFavorite,
 	selectStatuses
 } from "@/features/clear-cut/store/filters.slice"
@@ -96,7 +96,7 @@ export function AdvancedFilters({ className }: Props) {
 		getItemValue: selectableItemToString
 	})
 	const excessive_slop = useEnhancedItems({
-		items: useAppSelector(selectExcessiveSlop),
+		items: useAppSelector(selectExcessiveSlope),
 		getItemLabel: booleanSelectableToString,
 		getItemValue: booleanSelectableToString
 	})
@@ -230,7 +230,7 @@ export function AdvancedFilters({ className }: Props) {
 						type="single"
 						allowEmptyValue={false}
 						onValueChange={(item) =>
-							dispatch(filtersSlice.actions.setExcessiveSlop(item))
+							dispatch(filtersSlice.actions.setExcessiveSlope(item))
 						}
 					/>
 				</div>
