@@ -20,12 +20,12 @@ def start_scheduler():
         # Schedule at 8:00 and 12:00 every day
         scheduler.add_job(
             scheduled_airtable_sync,
-            trigger=CronTrigger(hour="8,12", minute="0"),
+            trigger=CronTrigger(hour="8,14", minute="0", timezone="Europe/Paris"),
             id="airtable_sync_job",
             replace_existing=True,
         )
         scheduler.start()
-        logger.info("Background scheduler started. Airtable sync scheduled for 8:00 and 12:00.")
+        logger.info("Background scheduler started. Airtable sync scheduled for 8:00 and 14:00 (Europe/Paris).")
 
 def stop_scheduler():
     if scheduler.running:
